@@ -1,4 +1,5 @@
-﻿using System.Web.Mvc;
+﻿using System.Web;
+using System.Web.Mvc;
 using IdentityMelody.Infrastructure;
 using IdentityMelody.Models;
 using Microsoft.AspNet.Identity;
@@ -40,6 +41,15 @@ namespace IdentityMelody.Controllers
             }
 
             return View(model);
+        }
+
+        [Authorize]
+        public ActionResult Logout()
+        {
+            var authentictionManager = HttpContext.GetOwinContext().Authentication;
+            authentictionManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+
+            return Redirect(Url.Action("Login", "Account"));
         }
 
         private void AddErrorsFromResult(IdentityResult result)
