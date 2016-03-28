@@ -1,6 +1,5 @@
 ﻿using IdentityMelody.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace IdentityMelody.Infrastructure
 {
@@ -8,15 +7,7 @@ namespace IdentityMelody.Infrastructure
     {
         public IdentityMelodyUserManager(IUserStore<MusicUser> store) : base(store)
         {
-        }
-
-        public static IdentityMelodyUserManager Create()
-        {
-            var manager = new IdentityMelodyUserManager(new UserStore<MusicUser>(new IdentityMelodyDbContext()));
-
-            manager.UserValidator = new UserValidator<MusicUser>(manager) { RequireUniqueEmail = true };
-
-            return manager;
+            UserValidator = new UserValidator<MusicUser>(this) { RequireUniqueEmail = true };
         }
     }
 }
