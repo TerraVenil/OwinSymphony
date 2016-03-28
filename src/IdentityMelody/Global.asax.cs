@@ -12,6 +12,8 @@ namespace IdentityMelody
             // Be careful!!! Different pipelines http://jcardy.co.uk/asp-net-webapi-error-the-controller-for-path-was-not-found-or-does-not-implement-icontroller/
             GlobalConfiguration.Configure(WebApiConfig.Register);
             RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            DependencyConfig.RegisterDependencies();
         }
 
         protected void Session_Start(object sender, EventArgs e)

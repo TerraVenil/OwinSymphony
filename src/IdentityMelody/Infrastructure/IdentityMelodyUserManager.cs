@@ -8,6 +8,7 @@ namespace IdentityMelody.Infrastructure
     {
         public IdentityMelodyUserManager(IUserStore<MusicUser> store) : base(store)
         {
+            UserValidator = new UserValidator<MusicUser>(this) { RequireUniqueEmail = true };
         }
 
         public static IdentityMelodyUserManager Create()

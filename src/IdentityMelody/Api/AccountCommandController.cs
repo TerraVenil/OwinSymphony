@@ -13,6 +13,13 @@ namespace IdentityMelody.Api
     [RoutePrefix("api/v1/account")]
     public class AccountCommandController : ApiController
     {
+        private readonly IdentityMelodyUserManager _userManager;
+
+        public AccountCommandController(IdentityMelodyUserManager userManager)
+        {
+            _userManager = userManager;
+        }
+
         [HttpPost]
         [Route("login")]
         public IHttpActionResult Login(LoginViewModel model, [FromUri]string returnUrl)
@@ -20,20 +27,17 @@ namespace IdentityMelody.Api
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            using (var userManager = IdentityMelodyUserManager.Create())
+            var user = _userManager.Find(model.UserName, model.Password);
+
+            if (user != null)
             {
-                var user = userManager.Find(model.UserName, model.Password);
+                var authentictionManager = HttpContext.Current.GetOwinContext().Authentication;
+                authentictionManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-                if (user != null)
-                {
-                    var authentictionManager = HttpContext.Current.GetOwinContext().Authentication;
-                    authentictionManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+                var userIdentity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+                authentictionManager.SignIn(new AuthenticationProperties { IsPersistent = false }, userIdentity);
 
-                    var userIdentity = userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-                    authentictionManager.SignIn(new AuthenticationProperties { IsPersistent = false }, userIdentity);
-
-                    return Ok();
-                }
+                return Ok();
             }
 
             return new UnauthorizedResult(new AuthenticationHeaderValue[] { }, this);
