@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using System.Web.Mvc;
+﻿using System.Web.Mvc;
+using IdentityMelody.Infrastructure;
 
 namespace IdentityMelody.Controllers
 {
@@ -7,8 +7,10 @@ namespace IdentityMelody.Controllers
     {
         public ActionResult Index()
         {
-            var data = new Dictionary<string, object> { { "Placeholder", "Placeholder" } };
-            return View(data);
+            using (var userManager = IdentityMelodyUserManager.Create())
+            {
+                return View(userManager.Users);
+            }
         }
     }
 }

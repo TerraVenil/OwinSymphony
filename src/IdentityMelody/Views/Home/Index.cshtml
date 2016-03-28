@@ -1,16 +1,31 @@
-﻿@{
+﻿@model IEnumerable<IdentityMelody.Models.MusicUser>
+
+@{
     ViewBag.Title = "Index";
 }
 
 <div class="panel panel-primary">
     <div class="panel-heading">User Details</div>
     <table class="table table-striped">
-        @foreach (string key in Model.Keys)
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+        </tr>
+        @if (!Model.Any())
         {
-            <tr>
-                <th>@key</th>
-                <td>@Model[key]</td>
-            </tr>
+            <tr><td colspan="3" class="text-center">No User Account</td></tr>
+        }
+        else
+        {
+            foreach (var user in Model)
+            {
+                <tr>
+                    <td>@user.Id</td>
+                    <td>@user.UserName</td>
+                    <td>@user.Email</td>
+                </tr>
+            }
         }
     </table>
 </div>

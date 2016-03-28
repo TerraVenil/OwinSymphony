@@ -172,6 +172,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\IdentityMelodyDbContext.cs" />
+    <Compile Include="Infrastructure\IdentityMelodyUserManager.cs" />
+    <Compile Include="Models\MusicUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <PropertyGroup>
