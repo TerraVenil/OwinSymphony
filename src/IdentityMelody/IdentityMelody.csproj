@@ -172,9 +172,11 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Web.config" />
+    <Content Include="Views\Account\Login.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="GlimpseSecurityPolicy.cs" />
     <Compile Include="Global.asax.cs">
@@ -182,6 +184,7 @@
     </Compile>
     <Compile Include="Infrastructure\IdentityMelodyDbContext.cs" />
     <Compile Include="Infrastructure\IdentityMelodyUserManager.cs" />
+    <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MusicUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
