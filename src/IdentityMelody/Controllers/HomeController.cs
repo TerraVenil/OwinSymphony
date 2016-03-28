@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 
 namespace IdentityMelody.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         public ActionResult Index()
