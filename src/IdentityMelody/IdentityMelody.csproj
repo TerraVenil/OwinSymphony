@@ -173,6 +173,7 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Account\Login.cshtml" />
+    <Content Include="Views\Home\Create.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -184,6 +185,7 @@
     </Compile>
     <Compile Include="Infrastructure\IdentityMelodyDbContext.cs" />
     <Compile Include="Infrastructure\IdentityMelodyUserManager.cs" />
+    <Compile Include="Models\CreateMusicUserModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MusicUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
