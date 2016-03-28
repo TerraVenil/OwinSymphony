@@ -7,19 +7,16 @@ namespace IdentityMelody.Controllers
 {
     public class HomeController : Controller
     {
-        private readonly IdentityMelodyUserManager _manager;
+        private readonly IdentityMelodyUserManager _userManager;
 
-        public HomeController(IdentityMelodyUserManager manager)
+        public HomeController(IdentityMelodyUserManager userManager)
         {
-            _manager = manager;
+            _userManager = userManager;
         }
 
         public ActionResult Index()
         {
-            using (var userManager = _manager)
-            {
-                return View(userManager.Users);
-            }
+            return View(_userManager.Users);
         }
 
         public ActionResult Create()
@@ -34,16 +31,13 @@ namespace IdentityMelody.Controllers
                 return View(model);
 
             var user = new MusicUser { UserName = model.Name, Email = model.Email };
-            using (var userManager = _manager)
+            var result = _userManager.Create(user, model.Password);
+            if (result.Succeeded)
             {
-                var result = userManager.Create(user, model.Password);
-                if (result.Succeeded)
-                {
-                    return RedirectToAction("Index");
-                }
-
-                AddErrorsFromResult(result);
+                return RedirectToAction("Index");
             }
+
+            AddErrorsFromResult(result);
 
             return View(model);
         }
