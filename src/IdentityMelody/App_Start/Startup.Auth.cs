@@ -21,7 +21,8 @@ namespace IdentityMelody
             var config = new HttpConfiguration();
             WebApiConfig.Register(config);
 
-            var container = DependencyConfig.RegisterDependencies();
+            var container = DependencyConfig.RegisterDependencies(app);
+
             config.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 
             app.UseWebApi(config);

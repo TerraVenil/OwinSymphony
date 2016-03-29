@@ -1,6 +1,5 @@
 ﻿using System.Linq;
 using System.Net.Http.Headers;
-using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
 using IdentityMelody.Infrastructure;
@@ -14,10 +13,12 @@ namespace IdentityMelody.Api
     public class AccountCommandController : ApiController
     {
         private readonly IdentityMelodyUserManager _userManager;
+        private readonly IAuthenticationManager _authentictionManager;
 
-        public AccountCommandController(IdentityMelodyUserManager userManager)
+        public AccountCommandController(IdentityMelodyUserManager userManager, IAuthenticationManager authentictionManager)
         {
             _userManager = userManager;
+            _authentictionManager = authentictionManager;
         }
 
         [HttpPost]
@@ -30,18 +31,15 @@ namespace IdentityMelody.Api
 
             var user = _userManager.Find(model.UserName, model.Password);
 
-            if (user != null)
-            {
-                var authentictionManager = HttpContext.Current.GetOwinContext().Authentication;
-                authentictionManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
+            if (user == null)
+                return new UnauthorizedResult(new AuthenticationHeaderValue[] { }, this);
 
-                var userIdentity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
-                authentictionManager.SignIn(new AuthenticationProperties { IsPersistent = false }, userIdentity);
+            _authentictionManager.SignOut(DefaultAuthenticationTypes.ApplicationCookie);
 
-                return Ok();
-            }
+            var userIdentity = _userManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
+            _authentictionManager.SignIn(new AuthenticationProperties { IsPersistent = false }, userIdentity);
 
-            return new UnauthorizedResult(new AuthenticationHeaderValue[] { }, this);
+            return Ok();
         }
 
         [HttpGet]
