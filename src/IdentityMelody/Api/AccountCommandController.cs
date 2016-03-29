@@ -1,4 +1,5 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Linq;
+using System.Net.Http.Headers;
 using System.Web;
 using System.Web.Http;
 using System.Web.Http.Results;
@@ -9,7 +10,6 @@ using Microsoft.Owin.Security;
 
 namespace IdentityMelody.Api
 {
-    [AllowAnonymous]
     [RoutePrefix("api/v1/account")]
     public class AccountCommandController : ApiController
     {
@@ -22,6 +22,7 @@ namespace IdentityMelody.Api
 
         [HttpPost]
         [Route("login")]
+        [AllowAnonymous]
         public IHttpActionResult Login(LoginViewModel model, [FromUri]string returnUrl)
         {
             if (!ModelState.IsValid)
@@ -41,6 +42,14 @@ namespace IdentityMelody.Api
             }
 
             return new UnauthorizedResult(new AuthenticationHeaderValue[] { }, this);
+        }
+
+        [HttpGet]
+        [Authorize]
+        [Route("users")]
+        public IHttpActionResult GetUsers()
+        {
+            return Ok(_userManager.Users.Select(x => new { x.Id, x.Email, x.UserName }));
         }
     }
 }
